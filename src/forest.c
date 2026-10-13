@@ -59,7 +59,7 @@ static uint64_t random64(uint64_t *s) {
     return z ^ (z >> 31);
 }
 static uint64_t bounded(uint64_t *s, uint64_t n) {
-    uint64_t threshold = (uint64_t)(-n) % n, r;
+    uint64_t threshold = (UINT64_C(0) - n) % n, r;
     do {
         r = random64(s);
     } while (r < threshold);
