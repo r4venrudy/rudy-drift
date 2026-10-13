@@ -63,6 +63,26 @@ rudy-drift score network.rdm observations.csv
 
 Choose separate trusted normal periods for training and calibration, and evaluate on a third period. Do not train on the traffic you are trying to investigate. Batch inputs are validated before scoring output begins. See [usage and data contracts](docs/usage.md) for limits, exit codes, platform redirection notes, and the Zeek feature definitions.
 
+### GitHub package
+
+The [GitHub container package](https://github.com/users/r4venrudy/packages/container/package/rudy-drift) includes the Linux amd64 CLI, C library, headers and synthetic examples. Docker runs it as an unprivileged user. The publication workflow builds the source, runs the native and CLI tests, then exercises the installed image with its network disabled and root filesystem read-only before pushing it.
+
+```sh
+docker pull ghcr.io/r4venrudy/rudy-drift:latest
+docker run --rm --network none --read-only ghcr.io/r4venrudy/rudy-drift:latest --version
+
+# Run the included synthetic example; the model is discarded on exit.
+docker run --rm --network none --read-only \
+  --tmpfs /data:rw,uid=10001,gid=10001,mode=0700 \
+  --entrypoint /bin/sh ghcr.io/r4venrudy/rudy-drift:latest -ec '
+    examples=/usr/local/share/rudy-drift/examples
+    rudy-drift fit "$examples/train.csv" "$examples/calibration.csv" /data/model.rdm
+    rudy-drift score /data/model.rdm "$examples/observations.csv"
+  '
+```
+
+For your own files, bind-mount input directories read-only and a separate model/output directory writable by UID 10001. Models are not saved back to the host unless you provide that mount. Images are tagged `latest` and `sha-<full-commit>`; pin the published digest for an exact image. This container runs the offline CLI; it does not collect live traffic. Windows users can use Docker's Linux-container mode or the native release ZIP.
+
 ### One observation, explained
 
 ```json
