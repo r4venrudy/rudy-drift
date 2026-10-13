@@ -1,0 +1,5 @@
+id,log_orig_bytes,log_duration,orig_byte_ratio
+ordinary-001,7.1,1.03,0.25
+review-001,18.2,0.01,0.99
+ordinary-002,6.8,0.9,0.2
+review-002,16.9,4.6,0.97

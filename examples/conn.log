@@ -1,0 +1,10 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	conn
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	service	duration	orig_bytes	resp_bytes	conn_state	orig_pkts	resp_pkts	missed_bytes
+#types	time	string	addr	port	addr	port	enum	string	interval	count	count	string	count	count	count
+1791849600.0	Csynthetic001	192.0.2.10	50000	198.51.100.20	443	tcp	ssl	2.0	300	2400	SF	5	8	0
+1791849601.0	Csynthetic002	192.0.2.10	50001	198.51.100.20	53	udp	dns	0.01	45	120	SF	1	1	0
+#close	2026-10-13-00-00-02

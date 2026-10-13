@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "seed": 44,
+    "dataset": "synthetic two-cluster stress test"
+  },
+  "fit": {
+    "version": "0.1.0",
+    "training_rows": 2048,
+    "calibration_rows": 1024,
+    "features": 3,
+    "trees": 128,
+    "sample_size": 256,
+    "seed": "44"
+  },
+  "test_rows": 2000,
+  "alpha": 0.05,
+  "native_iforest": {
+    "auroc": 0.976664,
+    "true_positive_rate": 0.696,
+    "false_positive_rate": 0.035,
+    "precision": 0.9521203830369357,
+    "alerts": 731,
+    "by_family": {
+      "combination": {
+        "rows": 500,
+        "alert_rate": 0.392
+      },
+      "normal": {
+        "rows": 1000,
+        "alert_rate": 0.035
+      },
+      "tail": {
+        "rows": 500,
+        "alert_rate": 1.0
+      }
+    }
+  },
+  "median_mad": {
+    "auroc": 0.749394,
+    "true_positive_rate": 0.52,
+    "false_positive_rate": 0.051,
+    "precision": 0.9106830122591943,
+    "alerts": 571,
+    "by_family": {
+      "combination": {
+        "rows": 500,
+        "alert_rate": 0.056
+      },
+      "normal": {
+        "rows": 1000,
+        "alert_rate": 0.051
+      },
+      "tail": {
+        "rows": 500,
+        "alert_rate": 0.984
+      }
+    }
+  },
+  "local_timing": {
+    "fit_seconds": 0.046764599974267185,
+    "score_with_alert_explanations_seconds": 0.06851790001383051,
+    "model_bytes": 504799
+  },
+  "limitations": "Synthetic and 1999 traffic do not establish modern deployment accuracy. No superiority claim. Timings include CLI I/O and are hardware-dependent."
+}

@@ -1,0 +1,201 @@
+{
+  "metadata": {
+    "dataset": "KDD Cup 1999 10 percent, legacy benchmark",
+    "source": "https://ndownloader.figshare.com/files/5976042",
+    "sha256": "8045aca0d84e70e622d1148d7df782496f6333bf6eb979a1b0837c42a9fd9561",
+    "seed": 44,
+    "source_rows": 494021,
+    "distinct_feature_vectors": 137632,
+    "discarded_ambiguous_vectors": 2,
+    "normal_unique": 84672,
+    "attack_unique": 52958,
+    "selection": "Deduplicate transformed feature vectors before splitting; discard normal/attack label conflicts; train/calibrate on normal only."
+  },
+  "fit": {
+    "version": "0.1.0",
+    "training_rows": 10000,
+    "calibration_rows": 4096,
+    "features": 16,
+    "trees": 128,
+    "sample_size": 256,
+    "seed": "44"
+  },
+  "test_rows": 9000,
+  "alpha": 0.05,
+  "native_iforest": {
+    "auroc": 0.9893860555555556,
+    "true_positive_rate": 0.927,
+    "false_positive_rate": 0.04733333333333333,
+    "precision": 0.9751051893408135,
+    "alerts": 5704,
+    "by_family": {
+      "back": {
+        "rows": 84,
+        "alert_rate": 0.07142857142857142
+      },
+      "buffer_overflow": {
+        "rows": 2,
+        "alert_rate": 0.0
+      },
+      "ftp_write": {
+        "rows": 1,
+        "alert_rate": 1.0
+      },
+      "guess_passwd": {
+        "rows": 7,
+        "alert_rate": 0.7142857142857143
+      },
+      "ipsweep": {
+        "rows": 82,
+        "alert_rate": 0.15853658536585366
+      },
+      "land": {
+        "rows": 1,
+        "alert_rate": 1.0
+      },
+      "loadmodule": {
+        "rows": 2,
+        "alert_rate": 0.0
+      },
+      "multihop": {
+        "rows": 1,
+        "alert_rate": 1.0
+      },
+      "neptune": {
+        "rows": 5384,
+        "alert_rate": 1.0
+      },
+      "nmap": {
+        "rows": 24,
+        "alert_rate": 0.125
+      },
+      "normal": {
+        "rows": 3000,
+        "alert_rate": 0.04733333333333333
+      },
+      "pod": {
+        "rows": 21,
+        "alert_rate": 0.047619047619047616
+      },
+      "portsweep": {
+        "rows": 46,
+        "alert_rate": 1.0
+      },
+      "rootkit": {
+        "rows": 1,
+        "alert_rate": 0.0
+      },
+      "satan": {
+        "rows": 62,
+        "alert_rate": 0.967741935483871
+      },
+      "smurf": {
+        "rows": 75,
+        "alert_rate": 0.05333333333333334
+      },
+      "teardrop": {
+        "rows": 99,
+        "alert_rate": 0.18181818181818182
+      },
+      "warezclient": {
+        "rows": 106,
+        "alert_rate": 0.1792452830188679
+      },
+      "warezmaster": {
+        "rows": 2,
+        "alert_rate": 0.0
+      }
+    }
+  },
+  "median_mad": {
+    "auroc": 0.9125608888888889,
+    "true_positive_rate": 0.06066666666666667,
+    "false_positive_rate": 0.047,
+    "precision": 0.7207920792079208,
+    "alerts": 505,
+    "by_family": {
+      "back": {
+        "rows": 84,
+        "alert_rate": 0.0
+      },
+      "buffer_overflow": {
+        "rows": 2,
+        "alert_rate": 0.0
+      },
+      "ftp_write": {
+        "rows": 1,
+        "alert_rate": 1.0
+      },
+      "guess_passwd": {
+        "rows": 7,
+        "alert_rate": 0.14285714285714285
+      },
+      "ipsweep": {
+        "rows": 82,
+        "alert_rate": 0.012195121951219513
+      },
+      "land": {
+        "rows": 1,
+        "alert_rate": 1.0
+      },
+      "loadmodule": {
+        "rows": 2,
+        "alert_rate": 0.0
+      },
+      "multihop": {
+        "rows": 1,
+        "alert_rate": 0.0
+      },
+      "neptune": {
+        "rows": 5384,
+        "alert_rate": 0.04736255572065379
+      },
+      "nmap": {
+        "rows": 24,
+        "alert_rate": 0.08333333333333333
+      },
+      "normal": {
+        "rows": 3000,
+        "alert_rate": 0.047
+      },
+      "pod": {
+        "rows": 21,
+        "alert_rate": 0.047619047619047616
+      },
+      "portsweep": {
+        "rows": 46,
+        "alert_rate": 0.6521739130434783
+      },
+      "rootkit": {
+        "rows": 1,
+        "alert_rate": 1.0
+      },
+      "satan": {
+        "rows": 62,
+        "alert_rate": 0.7903225806451613
+      },
+      "smurf": {
+        "rows": 75,
+        "alert_rate": 0.0
+      },
+      "teardrop": {
+        "rows": 99,
+        "alert_rate": 0.0
+      },
+      "warezclient": {
+        "rows": 106,
+        "alert_rate": 0.20754716981132076
+      },
+      "warezmaster": {
+        "rows": 2,
+        "alert_rate": 0.0
+      }
+    }
+  },
+  "local_timing": {
+    "fit_seconds": 0.1326693999581039,
+    "score_with_alert_explanations_seconds": 0.5094994999817573,
+    "model_bytes": 840420
+  },
+  "limitations": "Synthetic and 1999 traffic do not establish modern deployment accuracy. No superiority claim. Timings include CLI I/O and are hardware-dependent."
+}

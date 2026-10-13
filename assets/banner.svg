@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="title desc">
+<title id="title">Rudy Drift</title><desc id="desc">Learn the baseline. Investigate the deviation. Native C network anomaly triage.</desc>
+<rect width="1280" height="360" rx="18" fill="#0a1118"/>
+<path d="M0 0h7v360H0" fill="#55e0b6"/>
+<path d="M64 257H1216" stroke="#24333d"/>
+<g fill="#55e0b6" font-family="Consolas,monospace" font-size="14" letter-spacing="4"><text x="64" y="48">RUDY SYSTEMS / OPEN SOURCE</text></g>
+<text x="60" y="153" fill="#edf4f7" font-family="Arial,Helvetica,sans-serif" font-size="68" font-weight="700">RUDY <tspan fill="#55e0b6">/ DRIFT</tspan></text>
+<text x="64" y="211" fill="#b7c6ce" font-family="Arial,Helvetica,sans-serif" font-size="25">Learn the baseline. Investigate the deviation.</text>
+<text x="64" y="301" fill="#55e0b6" font-family="Consolas,monospace" font-size="15" letter-spacing="2">C17 / ISOLATION FOREST / NETWORK TELEMETRY</text>
+<text x="1216" y="301" text-anchor="end" fill="#b7c6ce" font-family="Consolas,monospace" font-size="12" letter-spacing="1">RESEARCH PREVIEW</text>
+<g stroke="#24333d" fill="none"><path d="M890 212H1216M890 60V212M950 60V212M1010 60V212M1070 60V212M1130 60V212M1190 60V212M890 100H1216M890 156H1216"/></g>
+<path d="M894 211C920 211 924 192 941 170S966 78 1003 78 1040 174 1069 192 1107 211 1150 211" fill="none" stroke="#55e0b6" stroke-width="3"/>
+<g fill="#b7c6ce"><circle cx="966" cy="171" r="4"/><circle cx="993" cy="139" r="4"/><circle cx="1018" cy="164" r="4"/><circle cx="1001" cy="195" r="4"/><circle cx="1046" cy="200" r="4"/></g>
+<path d="M1174 122V211" stroke="#55e0b6" stroke-dasharray="4 6"/>
+<circle cx="1174" cy="113" r="8" fill="#55e0b6"/><circle cx="1174" cy="113" r="16" fill="none" stroke="#55e0b6"/>
+</svg>

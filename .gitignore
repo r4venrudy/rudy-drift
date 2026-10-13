@@ -1,0 +1,7 @@
+/build*/
+/install*/
+/benchmark-data/
+/benchmark-results/
+*.rdm
+__pycache__/
+*.pyc

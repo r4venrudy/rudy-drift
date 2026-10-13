@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.20)
+project(DriftConsumer LANGUAGES C)
+find_package(RudyDrift CONFIG REQUIRED)
+add_executable(drift-consumer main.c)
+target_link_libraries(drift-consumer PRIVATE RudyDrift::rudy_drift)
+if(MSVC)
+  target_compile_definitions(drift-consumer PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif()
