@@ -41,6 +41,11 @@ class CLI(unittest.TestCase):
             self.assertNotEqual(p.returncode, 0, p.stdout)
         return p
 
+    def test_version_is_one_line(self):
+        out = self.run_cli("--version").stdout
+        self.assertRegex(out, r"^rudy-drift \d+\.\d+\.\d+\S*\n$")
+        self.assertIn("rudy-drift fit", self.run_cli("--help").stdout)
+
     def test_score_and_evidence(self):
         out = [json.loads(x) for x in self.run_cli("score", "model.rdm", "test.csv").stdout.splitlines()]
         self.assertFalse(out[0]["alert"])

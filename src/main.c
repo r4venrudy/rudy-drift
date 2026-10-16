@@ -266,7 +266,12 @@ done:
 int main(int argc, char **argv) {
     setlocale(LC_NUMERIC, "C");
     int rc;
-    if (argc == 2 && (!strcmp(argv[1], "--help") || !strcmp(argv[1], "--version"))) {
+    if (argc == 2 && !strcmp(argv[1], "--version")) {
+        // one line, so scripts and container health checks can read it
+        puts("rudy-drift " RD_VERSION);
+        return 0;
+    }
+    if (argc == 2 && !strcmp(argv[1], "--help")) {
         usage();
         return 0;
     }
