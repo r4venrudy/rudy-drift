@@ -24,6 +24,14 @@ Under clean exchangeable normal calibration/test samples and a model fitted inde
 
 For alerts, `sensitivity` lists each feature, its observed value, training median, and score reduction after median substitution. Negative deltas are valid. These are sensitivity probes, not causal explanations. Non-alerts contain an empty array. `--alerts-only` leaves non-alert rows out of the output.
 
+## Info
+
+```
+rudy-drift info model.rdm
+```
+
+One JSON object with the feature names and order the model expects, each feature's training median, the number of calibration rows and the smallest p-value the model can produce (`1/(n+1)`). Use it to check a CSV header or choose an alpha before scoring.
+
 ## Drift
 
 ```

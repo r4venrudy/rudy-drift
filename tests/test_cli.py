@@ -54,6 +54,13 @@ class CLI(unittest.TestCase):
         self.assertRegex(out, r"^rudy-drift \d+\.\d+\.\d+\S*\n$")
         self.assertIn("rudy-drift fit", self.run_cli("--help").stdout)
 
+    def test_info(self):
+        info = json.loads(self.run_cli("info", "model.rdm").stdout)
+        self.assertEqual([f["name"] for f in info["features"]], ["a", "b"])
+        self.assertEqual(info["calibration_rows"], 128)
+        self.assertEqual(info["minimum_p_value"], 1 / 129)
+        self.run_cli("info", "missing.rdm", success=False)
+
     def test_score_and_evidence(self):
         out = [json.loads(x) for x in self.run_cli("score", "model.rdm", "test.csv").stdout.splitlines()]
         self.assertFalse(out[0]["alert"])

@@ -14,6 +14,7 @@ static void usage(void) {
         "  rudy-drift score model.rdm observations.csv [--alpha P] [--alerts-only]\n"
         "  rudy-drift evidence model.rdm observations.csv [--alpha P]\n"
         "  rudy-drift drift model.rdm observations.csv\n"
+        "  rudy-drift info model.rdm\n"
         "All reports go to stdout. Fit refuses to overwrite files. See docs/usage.md.");
 }
 static int integer(const char *s, uint64_t *out) {
@@ -274,6 +275,34 @@ done:
     rd_free(m);
     return rc;
 }
+/* Prints what a model expects, so an input CSV can be checked before scoring. */
+static int info(const char *path) {
+    char e[RD_ERROR_SIZE];
+    FILE *f = fopen(path, "rb");
+    if (!f) {
+        fputs("cannot open model\n", stderr);
+        return 1;
+    }
+    rd_model *m = rd_load(f, e);
+    fclose(f);
+    if (!m) {
+        fprintf(stderr, "%s\n", e);
+        return 1;
+    }
+    printf("{\"version\":\"" RD_VERSION "\",\"calibration_rows\":%zu,\"minimum_p_value\":%.17g,"
+           "\"features\":[",
+           rd_calibration_rows(m), 1.0 / (double)(rd_calibration_rows(m) + 1));
+    for (unsigned j = 0; j < rd_features(m); ++j) {
+        if (j)
+            putchar(',');
+        fputs("{\"name\":", stdout);
+        json_string(stdout, rd_feature_name(m, j));
+        printf(",\"training_median\":%.17g}", rd_median(m, j));
+    }
+    fputs("]}\n", stdout);
+    rd_free(m);
+    return 0;
+}
 int main(int argc, char **argv) {
     setlocale(LC_NUMERIC, "C");
     int rc;
@@ -296,7 +325,9 @@ int main(int argc, char **argv) {
         data_csv(&d, stdout);
         data_free(&d);
         rc = 0;
-    } else if (argc >= 5 && !strcmp(argv[1], "fit"))
+    } else if (argc == 3 && !strcmp(argv[1], "info"))
+        rc = info(argv[2]);
+    else if (argc >= 5 && !strcmp(argv[1], "fit"))
         rc = fit(argc, argv);
     else if (argc >= 4 && (!strcmp(argv[1], "score") || !strcmp(argv[1], "evidence") ||
                            !strcmp(argv[1], "drift")))
