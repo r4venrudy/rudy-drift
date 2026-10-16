@@ -196,6 +196,11 @@ int data_read(const char *path, dataset *d, size_t limit, char *e) {
     size_t at = 0, capacity = 0;
     unsigned count;
     int status;
+    /* Spreadsheet exports often start with a UTF-8 byte order mark; skip it, reject other bytes. */
+    unsigned char bom[3];
+    size_t got = fread(bom, 1, 3, f);
+    if (!(got == 3 && bom[0] == 0xEF && bom[1] == 0xBB && bom[2] == 0xBF))
+        rewind(f);
     while ((status = read_line(f, line)) > 0) {
         ++at;
         if (!csv_split(line, fields, &count)) {

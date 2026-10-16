@@ -41,6 +41,14 @@ class CLI(unittest.TestCase):
             self.assertNotEqual(p.returncode, 0, p.stdout)
         return p
 
+    def test_utf8_bom_header(self):
+        data = (self.root / "test.csv").read_bytes()
+        (self.root / "bom.csv").write_bytes(b"\xef\xbb\xbf" + data)
+        plain = self.run_cli("score", "model.rdm", "test.csv").stdout
+        self.assertEqual(self.run_cli("score", "model.rdm", "bom.csv").stdout, plain)
+        (self.root / "latin.csv").write_bytes(b"\xe9" + data)
+        self.run_cli("score", "model.rdm", "latin.csv", success=False)
+
     def test_version_is_one_line(self):
         out = self.run_cli("--version").stdout
         self.assertRegex(out, r"^rudy-drift \d+\.\d+\.\d+\S*\n$")
