@@ -157,6 +157,8 @@ class CLI(unittest.TestCase):
         for bad in [log.replace("\\x09", "\\x20"), log.replace("#path\tconn", "#path\tdns"), log.replace("900\t2", "900\t-2"), log.replace("900\t2", "nan\t2"), log.replace("\tSF\n", "\tUNKNOWN\n"), log.replace("#fields\tproto", "#fields\twrong"), log.replace("\t9\t1\t", "\t1.5\t1\t")]:
             (self.root / "bad.log").write_text(bad, encoding="ascii")
             self.assertEqual(self.run_cli("zeek", "bad.log", success=False).stdout, "")
+        (self.root / "bad.log").write_text(log.replace("900\t2", "900\t-2"), encoding="ascii")
+        self.assertIn("in duration", self.run_cli("zeek", "bad.log", success=False).stderr)
 
 
 if __name__ == "__main__":

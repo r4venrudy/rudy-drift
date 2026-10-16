@@ -369,7 +369,7 @@ int zeek_read(const char *path, dataset *d, char *e) {
                 x[j] = 0;
                 missing += 1;
             } else if (!numeric(s, &x[j]) || x[j] < 0 || (j && floor(x[j]) != x[j])) {
-                errorf(e, at, "invalid nonnegative Zeek measurement");
+                errorf(e, at, "invalid nonnegative Zeek measurement in %s", required[j + 2]);
                 goto bad;
             }
         }
@@ -377,7 +377,7 @@ int zeek_read(const char *path, dataset *d, char *e) {
                    *id = fields[mapping[0]];
         if (strcmp(proto, "tcp") && strcmp(proto, "udp") && strcmp(proto, "icmp") &&
             strcmp(proto, "unknown")) {
-            errorf(e, at, "unsupported Zeek protocol");
+            errorf(e, at, "unsupported Zeek protocol (expected tcp, udp, icmp or unknown)");
             goto bad;
         }
         static const char *states[] = {"S0",   "S1",     "SF",    "REJ", "S2",  "S3", "RSTO",
