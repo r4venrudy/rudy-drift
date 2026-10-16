@@ -57,6 +57,12 @@ class CLI(unittest.TestCase):
         self.assertEqual(evidence["findings"][0]["asset"]["id"], out[1]["id"])
         self.assertEqual(evidence["findings"][0]["severity"], "info")
 
+    def test_alerts_only(self):
+        out = self.run_cli("score", "model.rdm", "test.csv", "--alerts-only", "--alpha", "0.05").stdout.splitlines()
+        self.assertEqual([json.loads(x)["id"] for x in out], ['unusual, "connection"'])
+        self.run_cli("drift", "model.rdm", "test.csv", "--alerts-only", success=False)
+        self.run_cli("score", "model.rdm", "test.csv", "--alerts-only", "--alerts-only", success=False)
+
     def test_calibration_formula(self):
         cal = [json.loads(x)["score"] for x in self.run_cli("score", "model.rdm", "cal.csv").stdout.splitlines()]
         rows = [json.loads(x) for x in self.run_cli("score", "model.rdm", "test.csv").stdout.splitlines()]

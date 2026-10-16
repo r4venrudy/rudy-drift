@@ -15,14 +15,14 @@ Training requires 2–100,000 observations; calibration requires 20–8,192. Use
 ## Score
 
 ```
-rudy-drift score model.rdm observations.csv [--alpha 0.05]
+rudy-drift score model.rdm observations.csv [--alpha 0.05] [--alerts-only]
 ```
 
 One JSON object per observation. `score` is higher for shorter average isolation paths. `p_value = (1 + number of calibration scores >= score) / (n_calibration + 1)`. `alert` is `p_value <= alpha`; default alpha is 0.05, allowed interval `(0,1)`. Minimum possible p-value is `1/(n+1)`; smaller alpha produces a warning because alerts are impossible. A p-value is **not** the probability that traffic is benign or malicious.
 
 Under clean exchangeable normal calibration/test samples and a model fitted independently, this rank calibration controls marginal false-alert probability. Real network traffic can violate these assumptions through time dependence, seasonality, population mixing and drift. The observed false-positive rate can differ from alpha. Fit separate baselines for genuinely different populations and validate the intended operating threshold on later traffic.
 
-For alerts, `sensitivity` lists each feature, its observed value, training median, and score reduction after median substitution. Negative deltas are valid. These are sensitivity probes, not causal explanations. Non-alerts contain an empty array.
+For alerts, `sensitivity` lists each feature, its observed value, training median, and score reduction after median substitution. Negative deltas are valid. These are sensitivity probes, not causal explanations. Non-alerts contain an empty array. `--alerts-only` leaves non-alert rows out of the output.
 
 ## Drift
 

@@ -11,7 +11,7 @@ static void usage(void) {
         "Rudy Drift " RD_VERSION " - calibrated network anomaly triage\n"
         "  rudy-drift zeek conn.log\n"
         "  rudy-drift fit train.csv calibration.csv model.rdm [--trees N] [--sample N] [--seed N]\n"
-        "  rudy-drift score model.rdm observations.csv [--alpha P]\n"
+        "  rudy-drift score model.rdm observations.csv [--alpha P] [--alerts-only]\n"
         "  rudy-drift evidence model.rdm observations.csv [--alpha P]\n"
         "  rudy-drift drift model.rdm observations.csv\n"
         "All reports go to stdout. Fit refuses to overwrite files. See docs/usage.md.");
@@ -152,11 +152,20 @@ static void explanations(const rd_model *m, const double *row) {
 }
 static int report(int argc, char **argv) {
     int is_drift = !strcmp(argv[1], "drift"), evidence = !strcmp(argv[1], "evidence");
+    int alpha_given = 0, alerts_only = 0;
     double alpha = 0.05;
-    if (argc != 4 &&
-        (is_drift || argc != 6 || strcmp(argv[4], "--alpha") || !probability(argv[5], &alpha))) {
-        fputs("invalid report options\n", stderr);
-        return 2;
+    for (int i = 4; i < argc; ++i) {
+        if (!is_drift && !alpha_given && !strcmp(argv[i], "--alpha") && i + 1 < argc &&
+            probability(argv[i + 1], &alpha)) {
+            alpha_given = 1;
+            ++i;
+        } else if (!strcmp(argv[1], "score") && !alerts_only && !strcmp(argv[i], "--alerts-only")) {
+            // large inputs are mostly normal rows; this keeps the output to what needs review
+            alerts_only = 1;
+        } else {
+            fputs("invalid report options\n", stderr);
+            return 2;
+        }
     }
     char e[RD_ERROR_SIZE];
     FILE *f = fopen(argv[2], "rb");
@@ -242,6 +251,8 @@ static int report(int argc, char **argv) {
                            data.names[j], row[j], rd_median(m, j), d[j]);
                 fputs("]}", stdout);
             } else {
+                if (alerts_only && !alert)
+                    continue;
                 fputs("{\"id\":", stdout);
                 json_string(stdout, data.ids[i]);
                 printf(",\"score\":%.17g,\"p_value\":%.17g,\"alpha\":%.17g,\"alert\":%s,"
