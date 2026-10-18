@@ -10,7 +10,7 @@ rudy-drift fit train.csv calibration.csv model.rdm [--trees N] [--sample N] [--s
 
 Defaults: 128 trees, sample size 256 (reduced to training row count when omitted), seed 42. Limits: 1–512 trees, 2–4096 rows per sample, sample size no larger than training set. The seed is an unsigned 64-bit decimal integer. An existing output file is never replaced. A failed write may leave a partial new file; discard that file before retrying.
 
-Training requires 2–100,000 observations; calibration requires 20–8,192. Use considerably more than the minimum and test on your own environment. Separate trusted normal periods are required. The CLI rejects the same path and identical matrices, but cannot establish that different inputs are independent, normal, or free of duplicates. Avoid repeated sessions across train/calibration/test and use time-separated evaluation for deployment.
+Training requires 2–100,000 observations; calibration requires 20–8,192. Use considerably more than the minimum and test on your own environment. Separate trusted normal periods are required. The CLI rejects the same path and the same feature rows even when they are reordered or have different IDs, but cannot establish that different inputs are independent, normal, or free of partial duplicates. Avoid repeated sessions across train/calibration/test and use time-separated evaluation for deployment.
 
 ## Score
 

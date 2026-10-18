@@ -111,6 +111,14 @@ class CLI(unittest.TestCase):
         self.assertEqual(original, (self.root / "model.rdm").read_bytes())
         self.run_cli("fit", "train.csv", "train.csv", "bad.rdm", success=False)
         self.assertFalse((self.root / "bad.rdm").exists())
+        with (self.root / "train.csv").open(newline="", encoding="ascii") as f:
+            rows = list(csv.reader(f))
+        with (self.root / "train-shuffled.csv").open("w", newline="", encoding="ascii") as f:
+            writer = csv.writer(f)
+            writer.writerow(rows[0])
+            writer.writerows((f"renamed-{i}", *row[1:]) for i, row in enumerate(reversed(rows[1:])))
+        self.run_cli("fit", "train.csv", "train-shuffled.csv", "shuffled.rdm", success=False)
+        self.assertFalse((self.root / "shuffled.rdm").exists())
 
     def test_seed_reproducible(self):
         self.run_cli("fit", "train.csv", "cal.csv", "second.rdm", "--trees", "32")

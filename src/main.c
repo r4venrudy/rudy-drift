@@ -50,6 +50,51 @@ static int schemas(const dataset *a, const dataset *b) {
             return 0;
     return 1;
 }
+typedef struct {
+    const double *values;
+    unsigned features;
+} row_ref;
+static int compare_rows(const void *left, const void *right) {
+    const row_ref *a = (const row_ref *)left, *b = (const row_ref *)right;
+    for (unsigned j = 0; j < a->features; ++j) {
+        if (a->values[j] < b->values[j])
+            return -1;
+        if (a->values[j] > b->values[j])
+            return 1;
+    }
+    return 0;
+}
+/* Compare the value rows as a multiset, so a reordered export cannot bypass
+ * the check that prevents reusing one sample for fitting and calibration. */
+static int same_observations(const dataset *a, const dataset *b, int *same) {
+    *same = 0;
+    if (a->features != b->features || a->rows != b->rows)
+        return 1;
+    if (a->rows > SIZE_MAX / sizeof(row_ref))
+        return 0;
+    row_ref *left = (row_ref *)malloc(a->rows * sizeof(row_ref));
+    row_ref *right = (row_ref *)malloc(b->rows * sizeof(row_ref));
+    if (!left || !right) {
+        free(left);
+        free(right);
+        return 0;
+    }
+    for (size_t i = 0; i < a->rows; ++i) {
+        left[i] = (row_ref){a->values + i * a->features, a->features};
+        right[i] = (row_ref){b->values + i * b->features, b->features};
+    }
+    qsort(left, a->rows, sizeof(row_ref), compare_rows);
+    qsort(right, b->rows, sizeof(row_ref), compare_rows);
+    *same = 1;
+    for (size_t i = 0; i < a->rows; ++i)
+        if (compare_rows(&left[i], &right[i])) {
+            *same = 0;
+            break;
+        }
+    free(left);
+    free(right);
+    return 1;
+}
 static int fit(int argc, char **argv) {
     rd_config cfg = {128, 256, 42};
     int sample_given = 0;
@@ -96,9 +141,14 @@ static int fit(int argc, char **argv) {
         fputs("training/calibration schema mismatch\n", stderr);
         goto done;
     }
-    if (!strcmp(argv[2], argv[3]) ||
-        (train.rows == cal.rows &&
-         !memcmp(train.values, cal.values, train.rows * train.features * sizeof(double)))) {
+    int same = 0;
+    if (!strcmp(argv[2], argv[3]))
+        same = 1;
+    else if (!same_observations(&train, &cal, &same)) {
+        fputs("out of memory while checking sample independence\n", stderr);
+        goto done;
+    }
+    if (same) {
         fputs("training and calibration must be separate samples\n", stderr);
         goto done;
     }
