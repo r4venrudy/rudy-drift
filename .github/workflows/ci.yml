@@ -18,6 +18,7 @@ jobs:
             artifact: windows-x64
           - os: macos-latest
             artifact: macos-arm64
+    timeout-minutes: 30
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -59,6 +60,7 @@ jobs:
           path: dist/*.zip
           if-no-files-found: error
   sanitizers:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -77,6 +79,7 @@ jobs:
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: [build, sanitizers]
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     permissions:
       contents: write
